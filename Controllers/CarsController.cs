@@ -1,19 +1,26 @@
-﻿using System.Linq;
+﻿using System;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CaMS.Context;
 using CaMS.Models;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 
 namespace CaMS.Controllers
 {
     public class CarsController : Controller
     {
         private readonly CarDbContext _context;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public CarsController(CarDbContext context)
+
+        public CarsController(CarDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: Cars
@@ -51,10 +58,15 @@ namespace CaMS.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,BrandName,ModelName,Descriptions,ManufacturingYear,EngineCondition,CurrentPaint,NumberOfRepairs,NumberOfAccident")] Car car)
+        public async Task<IActionResult> Create(Car car)
         {
             if (ModelState.IsValid)
             {
+                if (car.Photo != null)
+                {
+                    var path = "cars/covers/";
+                    car.PhotoUrl = await UploadImage(path, car.Photo);
+                }
                 _context.Add(car);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -94,6 +106,11 @@ namespace CaMS.Controllers
             {
                 try
                 {
+                    if (car.Photo != null)
+                    {
+                        var path = "cars/covers/";
+                        car.PhotoUrl = await UploadImage(path, car.Photo);
+                    }
                     _context.Update(car);
                     await _context.SaveChangesAsync();
                 }
@@ -145,6 +162,16 @@ namespace CaMS.Controllers
         private bool CarExists(int id)
         {
             return _context.Cars.Any(e => e.Id == id);
+        }
+
+
+        private async Task<string> UploadImage(string folderDestination, IFormFile imageFile)
+        {
+            folderDestination += Guid.NewGuid() + imageFile.FileName;
+            var combineImageFilePathToWwwrootFolderOfServer =
+                Path.Combine(_webHostEnvironment.WebRootPath, folderDestination);
+            await imageFile.CopyToAsync(new FileStream(combineImageFilePathToWwwrootFolderOfServer, FileMode.Create));
+            return "/" + folderDestination;
         }
     }
 }

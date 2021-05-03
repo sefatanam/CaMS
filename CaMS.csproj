@@ -28,6 +28,7 @@
 
   <ItemGroup>
     <Folder Include="Context\" />
+    <Folder Include="wwwroot\cars\covers\" />
   </ItemGroup>
 
 </Project>

@@ -36,42 +36,49 @@
             <th>
                 @Html.DisplayNameFor(model => model.NumberOfAccident)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhotoUrl)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.BrandName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ModelName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Descriptions)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ManufacturingYear)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EngineCondition)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CurrentPaint)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumberOfRepairs)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumberOfAccident)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BrandName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ModelName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descriptions)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ManufacturingYear)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EngineCondition)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CurrentPaint)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumberOfRepairs)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumberOfAccident)
+                </td>
+                <td>
+                    <img src="@(item.PhotoUrl ?? "img/not-found.jpg" )" asp-append-version="true" style="height: 200px">
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

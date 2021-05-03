@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Http;
 
 namespace CaMS.Models
 {
@@ -42,6 +44,14 @@ namespace CaMS.Models
         public int NumberOfRepairs { get; set; }
         [Display(Name = "Number of Accident")]
         public int NumberOfAccident { get; set; }
+
+        [NotMapped]
+        [Display(Name = "Choose the photo of your Car")]
+        [Required]
+        public IFormFile Photo { get; set; }
+        [Display(Name = "Photo")]
+        public string PhotoUrl { get; set; }
+
 
     }
 }
