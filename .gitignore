@@ -33,9 +33,6 @@ bld/
 #wwwroot/
 
 wwwroot/cars/covers/*
-wwwroot/cars/covers/*.png
-wwwroot/cars/covers/*.jpg
-wwwroot/cars/covers/*.jpeg
 
 # Visual Studio 2017 auto generated files
 Generated\ Files/
